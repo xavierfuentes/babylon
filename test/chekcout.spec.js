@@ -45,7 +45,14 @@ describe('Checkout', () => {
       expect(co.total()).to.equal(58.46);
     });
 
-    it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more');
+    it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more', () => {
+      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+      expect(co.total()).to.equal(9.25);
+      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+      expect(co.total()).to.equal(17);
+      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+      expect(co.total()).to.equal(25.5);
+    });
   });
 
   describe('Custom promotional rules', () => {
