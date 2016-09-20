@@ -1,7 +1,12 @@
 class Checkout {
-  constructor() {}
+  constructor() {
+    this.items = [];
+  }
 
-  scan() {}
+  scan(item) {
+    this.items = [...this.items, item];
+    return this;
+  }
 
   total() {}
 }

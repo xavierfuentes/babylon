@@ -12,6 +12,16 @@ describe('Checkout', () => {
     expect(co).to.respondTo('total');
   });
 
+  it('should scan items and store them', () => {
+    const co = new Checkout();
+    co.scan({code: '001', name: 'Article 1', price: '£1'});
+    co.scan({code: '002', name: 'Article 2', price: '£2'});
+    expect(co.items).to.deep.equal([
+      {code: '001', name: 'Article 1', price: '£1'},
+      {code: '002', name: 'Article 2', price: '£2'}
+    ]);
+  });
+
   it('should calculate the total price');
   it('should apply 10% discount if you spend over £60');
   it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more');
