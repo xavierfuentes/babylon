@@ -8,7 +8,11 @@ class Checkout {
     return this;
   }
 
-  total() {}
+  total() {
+    return this.items.reduce((total, item) => {
+      return total + Number(item.price.replace(/^£/, ""));
+    }, 0);
+  }
 }
 
 module.exports = Checkout;

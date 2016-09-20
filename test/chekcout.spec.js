@@ -30,9 +30,12 @@ describe('Checkout', () => {
         {code: '002', name: 'Article 2', price: '£2'}
       ]);
     });
+
+    it('should calculate the total price', () => {
+      expect(co.total()).to.equal(3);
+    });
   })
 
-  it('should calculate the total price');
   it('should apply 10% discount if you spend over £60');
   it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more');
   it('should apply custom promotional rules');
