@@ -15,13 +15,14 @@ class Checkout {
   }
 
   total() {
-    let totalPreDiscount = this.items.reduce((total, item) => {
-      return total + Number(item.price.replace(/^£/, ""));
-    }, 0);
+    let itemDiscount;
+    let totalPreDiscount = this.items
+    .map(item => ({ code: item.code, price: Number(item.price.replace(/[^0-9\.-]+/g, "")) }))
+    .reduce((total, item) => total + item.price, 0);
 
     // apply a discount to the total price if necessary
     if (totalPreDiscount >= this.promotional_rules.total.minimum)
-      totalPreDiscount -= totalPreDiscount * this.promotional_rules.total.discount / 100
+      totalPreDiscount -= totalPreDiscount * this.promotional_rules.total.discount / 100;
 
     return Math.round(totalPreDiscount * 100) / 100; // Round to at most 2 decimal places
   }

@@ -33,7 +33,11 @@ describe('Checkout', () => {
   })
 
   describe('Standard promotional rules', () => {
-    let co = new Checkout();
+    let co;
+
+    beforeEach(() => {
+      co = new Checkout();
+    })
 
     it('should apply 10% discount if you spend over £60', () => {
       co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
