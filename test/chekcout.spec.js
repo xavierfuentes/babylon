@@ -19,16 +19,18 @@ describe('Checkout', () => {
     let co = new Checkout();
     co.scan({code: '001', name: 'Article 1', price: '£1'});
     co.scan({code: '002', name: 'Article 2', price: '£2'});
+    co.scan({code: '002', name: 'Article 2', price: '£2'});
 
     it('should scan items and store them', () => {
       expect(co.items).to.deep.equal([
         {code: '001', name: 'Article 1', price: '£1'},
+        {code: '002', name: 'Article 2', price: '£2'},
         {code: '002', name: 'Article 2', price: '£2'}
       ]);
     });
 
     it('should calculate the total price', () => {
-      expect(co.total()).to.equal(3);
+      expect(co.total()).to.equal(5);
     });
   })
 
@@ -45,14 +47,7 @@ describe('Checkout', () => {
       expect(co.total()).to.equal(58.46);
     });
 
-    it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more', () => {
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
-      expect(co.total()).to.equal(9.25);
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
-      expect(co.total()).to.equal(17);
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
-      expect(co.total()).to.equal(25.5);
-    });
+    it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more');
   });
 
   describe('Custom promotional rules', () => {
