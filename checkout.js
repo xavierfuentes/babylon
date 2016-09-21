@@ -20,7 +20,7 @@ class Checkout {
 
   total() {
     let totalPreDiscount = Object.keys(this.cart)
-      .reduce((acc, item) => acc += this.cart[item].price * this.cart[item].qty, 0);
+      .reduce((acc, itemCode) => acc += this.cart[itemCode].price * this.cart[itemCode].qty, 0);
 
     // apply a discount to the total price if necessary
     if (totalPreDiscount >= this.promotional_rules.total.minimum)
@@ -38,9 +38,19 @@ class Checkout {
           price: Number(item.price.replace(/[^0-9\.-]+/g, "")),
           qty: 1
         }
-      } else acc[item.code].qty += 1
+      } else {
+        acc[item.code].qty += 1;
+        acc[item.code].price = this._applyItemDiscount(this.promotional_rules, acc[item.code]);
+      }
+
       return acc;
     }, {});
+  }
+
+  _applyItemDiscount(rules, item) {
+    return rules.items.hasOwnProperty(item.code) && item.qty >= rules.items[item.code].minimum
+      ? rules.items[item.code].price
+      : item.price;
   }
 }
 
