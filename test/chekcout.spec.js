@@ -47,17 +47,50 @@ describe('Checkout', () => {
       expect(co.total()).to.equal(58.46);
     });
 
-    it('should drop the price of "lavender hearts" to £8.5 when buying 2 or more', () => {
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+    it('should drop the price of "lavender heart" to £8.5 when buying 2 or more', () => {
+      co.scan({code: '001', name: 'Lavender heart', price: '£9.25'});
       expect(co.total()).to.equal(9.25);
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+      co.scan({code: '001', name: 'Lavender heart', price: '£9.25'});
       expect(co.total()).to.equal(17);
-      co.scan({code: '001', name: 'Lavender hearts', price: '£9.25'});
+      co.scan({code: '001', name: 'Lavender heart', price: '£9.25'});
       expect(co.total()).to.equal(25.5);
     });
   });
 
   describe('Custom promotional rules', () => {
-    it('should apply custom promotional rules');
+    let co;
+    const pr = {
+      total: { discount: 30, minimum: 100 },
+      items: {
+        '001': { price: 8, minimum: 5 },
+        '002': { price: 40, minimum: 2 },
+        '003': { price: 15, minimum: 3 },
+      },
+    };
+
+    beforeEach(() => {
+      co = new Checkout(pr);
+    })
+
+    it('should accept custom promotional rules', () => {
+      expect(co.promotional_rules).to.equal(pr)
+    });
+
+    it('should apply 30% discount if you spend over £100', () => {
+      co.scan({code: '001', name: 'Lavender heart', price: '£9.25'});
+      co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
+      co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
+      co.scan({code: '003', name: 'Kids T-shirt', price: '£19.95'});
+      expect(co.total()).to.equal(76.44);
+    });
+
+    it('should drop the price of "Personalised cufflinks" to £40 when buying 2 or more', () => {
+      co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
+      expect(co.total()).to.equal(45);
+      co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
+      expect(co.total()).to.equal(80);
+      co.scan({code: '002', name: 'Personalised cufflinks', price: '£45'});
+      expect(co.total()).to.equal(84);
+    });
   })
 })
