@@ -1,4 +1,6 @@
 ## The Test
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/xavifuefer/babylon.svg)](https://greenkeeper.io/)
 Our client is an online marketplace, here is a sample of some of the products available on our site:
 ```
 Product code  | Name                   | Price
